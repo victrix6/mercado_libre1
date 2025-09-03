@@ -40,6 +40,10 @@ envía de vuelta al cliente.
 ![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
 (Imagen tomada de https://bancolombia.github.io/scaffold-clean-architecture/docs/intro)
 
+## Diagrama de Secuencia
+
+![Blank diagram.png](applications/app-service/src/main/resources/Blank%20diagram.png)
+
 ## Guía de Uso
 Ser requiere tener instalado Java 21 y Gradle en el sistema.
 
@@ -127,6 +131,29 @@ Response (JSON):
   }
 ]
 ```
+
+## Herramientas usadas en el proyecto 
+el desarrollo de este proyecto se realizo con las siguientes herramientas:
+
+**IDes**: 
+- Cursor: Empleado para la generación de código asistida por IA, lo que permitió agilizar la construcción de clases y componentes.
+- IntelliJ IDEA: utilizado principalmente para la compilación, ejecución y depuración del proyecto, gracias a su interfaz más conocida, amigable y con mayor soporte para entornos de desarrollo en Java. Adicionalmente se utilizao plugins como SonarLint para análisis de código en tiempo real y Github Copilot para sugerencias de código asistidas por IA y para la construccion de este archivo.
+
+**Lenguaje de programación**:
+- Java 21: Lenguaje de programación principal utilizado para desarrollar la lógica de negocio y los componentes de la aplicación.
+
+**Frameworks y Librerías**:
+- Spring Boot: Framework utilizado para construir la aplicación, facilitando la creación de servicios REST y la gestión de dependencias.
+- Spring Web: Librería de Spring Boot utilizada para manejar las solicitudes
+- Spring Context: Librería de Spring Boot utilizada para la gestión de beans y la inyección de dependencias.
+- Jackson: Librería utilizada para la serialización y deserialización de objetos JSON (contenidad en spring starter web).
+- Lombok: Librería que reduce el código boilerplate mediante anotaciones para generar getters, setters, constructores, etc.
+
+**Herramientas de Construcción y Gestión de Dependencias**:
+- Gradle: Herramienta de construcción utilizada para gestionar las dependencias, compilar el código y ejecutar tareas relacionadas con el proyecto.
+
+**Generacion de estructura y validacion de Clean Arquitecture**:
+- Scaffold Clean Architecture: Plugin de Gradle utilizado para generar la estructura del proyecto siguiendo los principios de la Arquitectura Limpia y validar su correcta implementación.
 
 
 

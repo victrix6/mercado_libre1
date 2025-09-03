@@ -44,7 +44,7 @@ class ProductUseCaseTest {
                 .build();
 
         productWithId = validProduct.toBuilder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .build();
     }
 
@@ -60,7 +60,7 @@ class ProductUseCaseTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertEquals("550e8400-e29b-41d4-a716-446655440001", result.getId());
         assertEquals("Laptop Gaming", result.getProductName());
         assertEquals(1500.0, result.getPrice());
         
@@ -68,120 +68,34 @@ class ProductUseCaseTest {
     }
 
     @Test
-    @DisplayName("Debería lanzar excepción cuando se intenta agregar un producto nulo")
-    void shouldThrowExceptionWhenAddingNullProduct() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(null)
-        );
-        
-        assertEquals("El producto no puede ser nulo", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando el nombre del producto es nulo")
-    void shouldThrowExceptionWhenProductNameIsNull() {
+    @DisplayName("Debería agregar un producto nulo (validaciones se hacen en el controlador)")
+    void shouldAddNullProduct() {
         // Arrange
-        Product productWithNullName = validProduct.toBuilder()
-                .productName(null)
-                .build();
+        when(productRepository.addProduct(null))
+                .thenReturn(null);
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullName)
-        );
-        
-        assertEquals("El nombre del producto es obligatorio", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
+        // Act
+        Product result = productUseCase.addProduct(null);
+
+        // Assert
+        assertNull(result);
+        verify(productRepository).addProduct(null);
     }
 
-    @Test
-    @DisplayName("Debería lanzar excepción cuando el nombre del producto está vacío")
-    void shouldThrowExceptionWhenProductNameIsEmpty() {
-        // Arrange
-        Product productWithEmptyName = validProduct.toBuilder()
-                .productName("   ")
-                .build();
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithEmptyName)
-        );
-        
-        assertEquals("El nombre del producto es obligatorio", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando el precio del producto es nulo")
-    void shouldThrowExceptionWhenProductPriceIsNull() {
-        // Arrange
-        Product productWithNullPrice = validProduct.toBuilder()
-                .price(null)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullPrice)
-        );
-        
-        assertEquals("El precio del producto debe ser mayor a cero", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando el precio del producto es cero")
-    void shouldThrowExceptionWhenProductPriceIsZero() {
-        // Arrange
-        Product productWithZeroPrice = validProduct.toBuilder()
-                .price(0.0)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithZeroPrice)
-        );
-        
-        assertEquals("El precio del producto debe ser mayor a cero", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando el precio del producto es negativo")
-    void shouldThrowExceptionWhenProductPriceIsNegative() {
-        // Arrange
-        Product productWithNegativePrice = validProduct.toBuilder()
-                .price(-100.0)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNegativePrice)
-        );
-        
-        assertEquals("El precio del producto debe ser mayor a cero", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
 
     @Test
     @DisplayName("Debería retornar lista de productos cuando existen productos")
     void shouldReturnProductListWhenProductsExist() {
         // Arrange
         Product product1 = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Producto 1")
                 .price(100.0)
                 .build();
         
         Product product2 = Product.builder()
-                .id(2L)
+                .id("550e8400-e29b-41d4-a716-446655440002")
                 .productName("Producto 2")
                 .price(200.0)
                 .build();
@@ -224,9 +138,9 @@ class ProductUseCaseTest {
     @DisplayName("Debería comparar productos con IDs diferentes exitosamente")
     void shouldCompareProductsWithDifferentIdsSuccessfully() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 2L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
-        Product product2 = Product.builder().id(2L).productName("Producto 2").price(200.0).build();
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
+        Product product2 = Product.builder().id("550e8400-e29b-41d4-a716-446655440002").productName("Producto 2").price(200.0).build();
         List<Product> expectedProducts = Arrays.asList(product1, product2);
         
         when(productRepository.compareProducts(ids))
@@ -244,33 +158,36 @@ class ProductUseCaseTest {
     }
 
     @Test
-    @DisplayName("Debería lanzar excepción cuando todos los IDs son duplicados (solo queda 1 único)")
-    void shouldThrowExceptionWhenAllIdsAreDuplicates() {
+    @DisplayName("Debería procesar IDs duplicados (validaciones en controlador)")
+    void shouldProcessDuplicateIds() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 1L, 1L);
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.compareProducts(ids)
-        );
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").build();
+        List<Product> expectedProducts = Arrays.asList(product1);
         
-        assertEquals("Debe proporcionar al menos dos IDs válidos (no nulos)", exception.getMessage());
-        verify(productRepository, never()).compareProducts(any());
+        when(productRepository.compareProducts(ids))
+                .thenReturn(expectedProducts);
+
+        // Act
+        List<Product> result = productUseCase.compareProducts(ids);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(expectedProducts, result);
+        verify(productRepository).compareProducts(ids);
     }
 
     @Test
-    @DisplayName("Debería manejar IDs duplicados correctamente cuando hay al menos 2 únicos")
-    void shouldHandleDuplicateIdsCorrectlyWhenAtLeastTwoUnique() {
+    @DisplayName("Debería procesar IDs con duplicados (validaciones en controlador)")
+    void shouldProcessIdsWithDuplicates() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 1L, 2L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
-        Product product2 = Product.builder().id(2L).productName("Producto 2").price(200.0).build();
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
+        Product product2 = Product.builder().id("550e8400-e29b-41d4-a716-446655440002").productName("Producto 2").price(200.0).build();
         List<Product> expectedProducts = Arrays.asList(product1, product2);
         
-        // La normalización elimina duplicados, así que el repositorio recibe [1L, 2L]
-        List<Long> normalizedIds = Arrays.asList(1L, 2L);
-        when(productRepository.compareProducts(normalizedIds))
+        when(productRepository.compareProducts(ids))
                 .thenReturn(expectedProducts);
 
         // Act
@@ -281,52 +198,62 @@ class ProductUseCaseTest {
         assertEquals(2, result.size());
         assertEquals(expectedProducts, result);
         
-        verify(productRepository).compareProducts(normalizedIds);
+        verify(productRepository).compareProducts(ids);
     }
 
     @Test
-    @DisplayName("Debería lanzar excepción cuando la lista de IDs es nula")
-    void shouldThrowExceptionWhenIdListIsNull() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.compareProducts(null)
-        );
-        
-        assertEquals("La lista de IDs no puede ser nula", exception.getMessage());
-        verify(productRepository, never()).compareProducts(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando hay menos de 2 IDs")
-    void shouldThrowExceptionWhenLessThanTwoIds() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.compareProducts(Arrays.asList(1L))
-        );
-        
-        assertEquals("Debe proporcionar al menos dos IDs", exception.getMessage());
-        verify(productRepository, never()).compareProducts(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando faltan productos para comparar (exactamente 2 IDs)")
-    void shouldThrowExceptionWhenMissingProductsForComparisonWithTwoIds() {
+    @DisplayName("Debería procesar lista de IDs nula (validaciones en controlador)")
+    void shouldProcessNullIdList() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 2L);
+        when(productRepository.compareProducts(null))
+                .thenReturn(java.util.Collections.emptyList());
+
+        // Act
+        java.util.List<Product> result = productUseCase.compareProducts(null);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(productRepository).compareProducts(null);
+    }
+
+    @Test
+    @DisplayName("Debería procesar lista con menos de 2 IDs (validaciones en controlador)")
+    void shouldProcessListWithLessThanTwoIds() {
+        // Arrange
+        List<String> singleId = Arrays.asList("550e8400-e29b-41d4-a716-446655440001");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").build();
+        java.util.List<Product> expectedProducts = Arrays.asList(product1);
+        
+        when(productRepository.compareProducts(singleId))
+                .thenReturn(expectedProducts);
+
+        // Act
+        java.util.List<Product> result = productUseCase.compareProducts(singleId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(expectedProducts, result);
+        verify(productRepository).compareProducts(singleId);
+    }
+
+    @Test
+    @DisplayName("Debería procesar lista vacía de productos encontrados (validaciones en controlador)")
+    void shouldProcessEmptyFoundProductsList() {
+        // Arrange
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002");
         List<Product> foundProducts = Arrays.asList(); // No se encontraron productos
         
         when(productRepository.compareProducts(ids))
                 .thenReturn(foundProducts);
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.compareProducts(ids)
-        );
-        
-        assertEquals("Alguno de los productos solicitados no existe", exception.getMessage());
+        // Act
+        List<Product> result = productUseCase.compareProducts(ids);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
         verify(productRepository).compareProducts(ids);
     }
 
@@ -368,7 +295,7 @@ class ProductUseCaseTest {
     @DisplayName("Debería manejar excepción del repositorio al comparar productos")
     void shouldHandleRepositoryExceptionWhenComparingProducts() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 2L);
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002");
         when(productRepository.compareProducts(any()))
                 .thenThrow(new RuntimeException("Producto no encontrado"));
 
@@ -382,103 +309,15 @@ class ProductUseCaseTest {
         verify(productRepository).compareProducts(ids);
     }
 
-    @Test
-    @DisplayName("Debería lanzar excepción cuando la descripción es nula")
-    void shouldThrowExceptionWhenDescriptionIsNull() {
-        // Arrange
-        Product productWithNullDescription = validProduct.toBuilder()
-                .description(null)
-                .build();
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullDescription)
-        );
-        
-        assertEquals("La descripción del producto es obligatoria", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando la URL de imagen es nula")
-    void shouldThrowExceptionWhenImageUrlIsNull() {
-        // Arrange
-        Product productWithNullImageUrl = validProduct.toBuilder()
-                .imageUrl(null)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullImageUrl)
-        );
-        
-        assertEquals("La URL de la imagen es obligatoria", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando la calificación es nula")
-    void shouldThrowExceptionWhenRatingIsNull() {
-        // Arrange
-        Product productWithNullRating = validProduct.toBuilder()
-                .rating(null)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullRating)
-        );
-        
-        assertEquals("La calificación del producto debe ser mayor o igual a cero", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando la calificación es negativa")
-    void shouldThrowExceptionWhenRatingIsNegative() {
-        // Arrange
-        Product productWithNegativeRating = validProduct.toBuilder()
-                .rating(-1.0)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNegativeRating)
-        );
-        
-        assertEquals("La calificación del producto debe ser mayor o igual a cero", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
-
-    @Test
-    @DisplayName("Debería lanzar excepción cuando las especificaciones son nulas")
-    void shouldThrowExceptionWhenSpecificationsIsNull() {
-        // Arrange
-        Product productWithNullSpecifications = validProduct.toBuilder()
-                .specifications(null)
-                .build();
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.addProduct(productWithNullSpecifications)
-        );
-        
-        assertEquals("Las especificaciones del producto son obligatorias", exception.getMessage());
-        verify(productRepository, never()).addProduct(any());
-    }
 
     @Test
     @DisplayName("Debería manejar más de 2 IDs correctamente cuando existen al menos 2 productos")
     void shouldHandleMoreThanTwoIdsCorrectlyWhenAtLeastTwoProductsExist() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 2L, 3L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
-        Product product2 = Product.builder().id(2L).productName("Producto 2").price(200.0).build();
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002", "550e8400-e29b-41d4-a716-446655440003");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
+        Product product2 = Product.builder().id("550e8400-e29b-41d4-a716-446655440002").productName("Producto 2").price(200.0).build();
         List<Product> foundProducts = Arrays.asList(product1, product2); // Solo 2 de 3 encontrados
         
         when(productRepository.compareProducts(ids))
@@ -496,23 +335,23 @@ class ProductUseCaseTest {
     }
 
     @Test
-    @DisplayName("Debería lanzar excepción cuando hay más de 2 IDs pero menos de 2 productos encontrados")
-    void shouldThrowExceptionWhenMoreThanTwoIdsButLessThanTwoProductsFound() {
+    @DisplayName("Debería procesar menos de 2 productos encontrados con más de 2 IDs (validaciones en controlador)")
+    void shouldProcessLessThanTwoProductsFoundWithMoreThanTwoIds() {
         // Arrange
-        List<Long> ids = Arrays.asList(1L, 2L, 3L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
+        List<String> ids = Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002", "550e8400-e29b-41d4-a716-446655440003");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
         List<Product> foundProducts = Arrays.asList(product1); // Solo 1 de 3 encontrados
         
         when(productRepository.compareProducts(ids))
                 .thenReturn(foundProducts);
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> productUseCase.compareProducts(ids)
-        );
-        
-        assertEquals("Se requieren al menos dos productos existentes para comparar", exception.getMessage());
+        // Act
+        List<Product> result = productUseCase.compareProducts(ids);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(foundProducts, result);
         verify(productRepository).compareProducts(ids);
     }
 }

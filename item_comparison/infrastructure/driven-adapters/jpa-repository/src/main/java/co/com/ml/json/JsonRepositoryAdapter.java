@@ -23,8 +23,8 @@ public class JsonRepositoryAdapter implements ProductRepository {
     public Product addProduct(Product product) {
         try {
             List<Product> products = loadProducts();
-            if (product.getId() == null) {
-                product.setId(System.currentTimeMillis());
+            if (product.getId() == null || product.getId().trim().isEmpty()) {
+                product.setId(Product.generateId());
             }
             products.add(product);
             saveProducts(products);
@@ -44,15 +44,15 @@ public class JsonRepositoryAdapter implements ProductRepository {
     }
 
     @Override
-    public List<Product> compareProducts(List<Long> productIds) {
+    public List<Product> compareProducts(List<String> productIds) {
         if (productIds == null || productIds.isEmpty()) {
             return new ArrayList<>();
         }
         try {
             List<Product> all = loadProducts();
             List<Product> result = new ArrayList<>();
-            for (Long id : productIds) {
-                if (id == null) continue;
+            for (String id : productIds) {
+                if (id == null || id.trim().isEmpty()) continue;
                 all.stream()
                     .filter(p -> p.getId() != null && p.getId().equals(id))
                     .findFirst()

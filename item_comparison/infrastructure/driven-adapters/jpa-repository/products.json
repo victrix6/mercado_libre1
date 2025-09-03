@@ -1,17 +1,17 @@
 [ {
-  "id" : 1756903322170,
-  "productName" : "Test",
-  "imageUrl" : "url",
-  "description" : "description",
-  "price" : 99.9,
+  "id" : "550e8400-e29b-41d4-a716-446655440001",
+  "productName" : "Laptop Gaming",
+  "imageUrl" : "https://example.com/laptop.jpg",
+  "description" : "Laptop para gaming de alta gama",
+  "price" : 1500.0,
   "rating" : 4.5,
-  "specifications" : "specifications"
+  "specifications" : "Intel i7, 16GB RAM, RTX 3070"
 }, {
-  "id" : 1756905176762,
-  "productName" : "Test",
-  "imageUrl" : "url",
-  "description" : "description",
-  "price" : 99.9,
-  "rating" : 4.5,
-  "specifications" : "specifications"
+  "id" : "550e8400-e29b-41d4-a716-446655440002",
+  "productName" : "Smartphone Pro",
+  "imageUrl" : "https://example.com/smartphone.jpg",
+  "description" : "Smartphone de última generación",
+  "price" : 800.0,
+  "rating" : 4.2,
+  "specifications" : "128GB, 8GB RAM, Cámara 108MP"
 } ]

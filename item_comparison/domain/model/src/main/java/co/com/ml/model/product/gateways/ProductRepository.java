@@ -24,5 +24,5 @@ public interface ProductRepository {
      * @param productIds lista de IDs de productos a recuperar/validar
      * @return lista de productos encontrados para dichos IDs
      */
-    List<Product> compareProducts(List<Long> productIds);
+    List<Product> compareProducts(List<String> productIds);
 }

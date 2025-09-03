@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.ml.model.product.Product;
 import co.com.ml.usecase.product.ProductUseCase;
+import co.com.ml.api.util.ProductValidationUtil;
+import co.com.ml.api.dto.ProductDto;
+import co.com.ml.api.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
+
+import jakarta.validation.Valid;
 
 /**
  * API Rest controller para productos.
@@ -26,6 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class ApiRest {
 
     private final ProductUseCase productUseCase;
+    private final ProductValidationUtil productValidationUtil;
+    private final ProductMapper productMapper;
 
 
     /**
@@ -33,31 +40,51 @@ public class ApiRest {
      * @return lista de productos
      */
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<Product> products = productUseCase.listAllProducts();
-        return ResponseEntity.ok(products);
+        List<ProductDto> productDtos = productMapper.toDtoList(products);
+        return ResponseEntity.ok(productDtos);
     }
 
     /**
      * Devuelve los productos solicitados para comparación en formato JSON.
-     * Recibe 2 o más IDs mediante query param: /product/compare?ids=1&ids=2&ids=3
+     * Recibe 2 o más IDs mediante query param: /product/compare?ids=uuid1&ids=uuid2&ids=uuid3
      * @param ids lista de IDs de productos a comparar (>=2)
      * @return lista de productos solicitados
      */
     @GetMapping("/compare")
-    public ResponseEntity<List<Product>> compareProducts(@RequestParam("ids") List<Long> ids) {
+    public ResponseEntity<List<ProductDto>> compareProducts(@RequestParam("ids") List<String> ids) {
+        productValidationUtil.validateProductIdsForComparison(ids);
+        
         List<Product> result = productUseCase.compareProducts(ids);
-        return ResponseEntity.ok(result);
+        
+        productValidationUtil.validateComparisonResult(ids, result);
+        
+        List<ProductDto> productDtos = productMapper.toDtoList(result);
+        return ResponseEntity.ok(productDtos);
     }
 
     /**
      * Guarda un nuevo producto
-     * @param product producto a guardar
+     * @param productDto producto a guardar
      * @return producto guardado
      */
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductDto productDto) {
+        // Convertir DTO a modelo de dominio
+        Product product = productMapper.toModel(productDto);
+        
+        // Generar ID automáticamente si no se proporciona
+        if (product.getId() == null || product.getId().trim().isEmpty()) {
+            product = product.toBuilder().id(Product.generateId()).build();
+        }
+        
+        // Guardar el producto usando el caso de uso
         Product savedProduct = productUseCase.addProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+        
+        // Convertir el modelo de dominio de vuelta a DTO
+        ProductDto savedProductDto = productMapper.toDto(savedProduct);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDto);
     }
 }

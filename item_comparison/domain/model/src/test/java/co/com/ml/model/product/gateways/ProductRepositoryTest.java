@@ -25,7 +25,7 @@ class ProductRepositoryTest {
         
         // Crear un producto de ejemplo
         sampleProduct = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Laptop Gaming")
                 .imageUrl("https://example.com/laptop.jpg")
                 .description("Laptop para gaming de alta gama")
@@ -65,7 +65,7 @@ class ProductRepositoryTest {
                 .build();
         
         Product productWithId = productWithoutId.toBuilder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .build();
         
         when(productRepository.addProduct(productWithoutId))
@@ -88,13 +88,13 @@ class ProductRepositoryTest {
     void shouldReturnListOfAllProducts() {
         // Arrange
         Product product1 = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Producto 1")
                 .price(100.0)
                 .build();
         
         Product product2 = Product.builder()
-                .id(2L)
+                .id("550e8400-e29b-41d4-a716-446655440002")
                 .productName("Producto 2")
                 .price(200.0)
                 .build();
@@ -135,9 +135,9 @@ class ProductRepositoryTest {
     @DisplayName("Debería comparar dos productos por sus IDs y retornar lista de productos")
     void shouldCompareProductsByIdsAndReturnProductList() {
         // Arrange
-        java.util.List<Long> ids = java.util.Arrays.asList(1L, 2L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
-        Product product2 = Product.builder().id(2L).productName("Producto 2").price(200.0).build();
+        java.util.List<String> ids = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
+        Product product2 = Product.builder().id("550e8400-e29b-41d4-a716-446655440002").productName("Producto 2").price(200.0).build();
         java.util.List<Product> expectedProducts = java.util.Arrays.asList(product1, product2);
         
         when(productRepository.compareProducts(ids))
@@ -158,8 +158,8 @@ class ProductRepositoryTest {
     @DisplayName("Debería manejar comparación de productos con IDs duplicados")
     void shouldHandleComparisonOfProductsWithDuplicateIds() {
         // Arrange
-        java.util.List<Long> ids = java.util.Arrays.asList(1L, 1L);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
+        java.util.List<String> ids = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001");
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
         java.util.List<Product> expectedProducts = java.util.Arrays.asList(product1);
         
         when(productRepository.compareProducts(ids))
@@ -180,8 +180,8 @@ class ProductRepositoryTest {
     @DisplayName("Debería manejar comparación con IDs nulos")
     void shouldHandleComparisonWithNullIds() {
         // Arrange
-        java.util.List<Long> ids = java.util.Arrays.asList(1L, null);
-        Product product1 = Product.builder().id(1L).productName("Producto 1").price(100.0).build();
+        java.util.List<String> ids = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440001", null);
+        Product product1 = Product.builder().id("550e8400-e29b-41d4-a716-446655440001").productName("Producto 1").price(100.0).build();
         java.util.List<Product> expectedProducts = java.util.Arrays.asList(product1);
         
         when(productRepository.compareProducts(ids))
@@ -219,7 +219,7 @@ class ProductRepositoryTest {
     @DisplayName("Debería retornar lista vacía cuando se comparan productos inexistentes")
     void shouldReturnEmptyListWhenComparingNonExistentProducts() {
         // Arrange
-        java.util.List<Long> ids = java.util.Arrays.asList(999L, 998L);
+        java.util.List<String> ids = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440999", "550e8400-e29b-41d4-a716-446655440998");
         java.util.List<Product> expectedProducts = java.util.Collections.emptyList();
         
         when(productRepository.compareProducts(ids))

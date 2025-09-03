@@ -28,7 +28,7 @@ class ProductTest {
     @DisplayName("Debería crear un producto con constructor con todos los parámetros")
     void shouldCreateProductWithAllArgsConstructor() {
         // Arrange
-        Long id = 1L;
+        String id = "550e8400-e29b-41d4-a716-446655440001";
         String productName = "Laptop Gaming";
         String imageUrl = "https://example.com/laptop.jpg";
         String description = "Laptop para gaming de alta gama";
@@ -54,7 +54,7 @@ class ProductTest {
     @DisplayName("Debería crear un producto usando el patrón Builder")
     void shouldCreateProductUsingBuilder() {
         // Arrange
-        Long id = 2L;
+        String id = "550e8400-e29b-41d4-a716-446655440002";
         String productName = "Smartphone";
         String imageUrl = "https://example.com/phone.jpg";
         String description = "Smartphone de última generación";
@@ -89,14 +89,14 @@ class ProductTest {
     void shouldCreateProductUsingBuilderWithSomeNullFields() {
         // Act
         Product product = Product.builder()
-                .id(3L)
+                .id("550e8400-e29b-41d4-a716-446655440003")
                 .productName("Tablet")
                 .price(300.0)
                 .build();
 
         // Assert
         assertNotNull(product);
-        assertEquals(3L, product.getId());
+        assertEquals("550e8400-e29b-41d4-a716-446655440003", product.getId());
         assertEquals("Tablet", product.getProductName());
         assertEquals(300.0, product.getPrice());
         assertNull(product.getImageUrl());
@@ -110,7 +110,7 @@ class ProductTest {
     void shouldAllowModifyingFieldsUsingSetters() {
         // Arrange
         Product product = new Product();
-        Long id = 4L;
+        String id = "550e8400-e29b-41d4-a716-446655440004";
         String productName = "Monitor";
         String imageUrl = "https://example.com/monitor.jpg";
         String description = "Monitor 4K de 27 pulgadas";
@@ -142,7 +142,7 @@ class ProductTest {
     void shouldCreateProductCopyUsingToBuilder() {
         // Arrange
         Product originalProduct = Product.builder()
-                .id(5L)
+                .id("550e8400-e29b-41d4-a716-446655440005")
                 .productName("Teclado")
                 .imageUrl("https://example.com/keyboard.jpg")
                 .description("Teclado mecánico")
@@ -153,14 +153,14 @@ class ProductTest {
 
         // Act
         Product copiedProduct = originalProduct.toBuilder()
-                .id(6L)
+                .id("550e8400-e29b-41d4-a716-446655440006")
                 .productName("Teclado Pro")
                 .price(200.0)
                 .build();
 
         // Assert
         assertNotNull(copiedProduct);
-        assertEquals(6L, copiedProduct.getId());
+        assertEquals("550e8400-e29b-41d4-a716-446655440006", copiedProduct.getId());
         assertEquals("Teclado Pro", copiedProduct.getProductName());
         assertEquals("https://example.com/keyboard.jpg", copiedProduct.getImageUrl());
         assertEquals("Teclado mecánico", copiedProduct.getDescription());
@@ -169,7 +169,7 @@ class ProductTest {
         assertEquals("RGB, Cherry MX Blue", copiedProduct.getSpecifications());
 
         // Verificar que el producto original no cambió
-        assertEquals(5L, originalProduct.getId());
+        assertEquals("550e8400-e29b-41d4-a716-446655440005", originalProduct.getId());
         assertEquals("Teclado", originalProduct.getProductName());
         assertEquals(150.0, originalProduct.getPrice());
     }
@@ -179,19 +179,19 @@ class ProductTest {
     void shouldImplementEqualsAndHashCodeCorrectly() {
         // Arrange
         Product product1 = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Producto Test")
                 .price(100.0)
                 .build();
 
         Product product2 = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Producto Test")
                 .price(100.0)
                 .build();
 
         Product product3 = Product.builder()
-                .id(2L)
+                .id("550e8400-e29b-41d4-a716-446655440002")
                 .productName("Producto Test")
                 .price(100.0)
                 .build();
@@ -208,7 +208,7 @@ class ProductTest {
     void shouldImplementToStringCorrectly() {
         // Arrange
         Product product = Product.builder()
-                .id(1L)
+                .id("550e8400-e29b-41d4-a716-446655440001")
                 .productName("Producto Test")
                 .price(100.0)
                 .build();
@@ -219,7 +219,7 @@ class ProductTest {
         // Assert
         assertNotNull(toString);
         assertTrue(toString.contains("Product"));
-        assertTrue(toString.contains("id=1"));
+        assertTrue(toString.contains("id=550e8400-e29b-41d4-a716-446655440001"));
         assertTrue(toString.contains("productName=Producto Test"));
         assertTrue(toString.contains("price=100.0"));
     }

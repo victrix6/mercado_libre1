@@ -1,5 +1,5 @@
 [ {
-  "id" : 1756831302752,
+  "id" : "1756831302752",
   "productName" : "teclado steelseries",
   "imageUrl" : "https://example.com/laptop.png",
   "description" : "Laptop con 16GB RAM y 512GB SSD",
@@ -7,7 +7,7 @@
   "rating" : 4.5,
   "specifications" : "Intel i7, 16GB RAM, 512GB SSD"
 }, {
-  "id" : 1756831498086,
+  "id" : "1756831498086",
   "productName" : "Smartphone Galaxy X",
   "imageUrl" : "https://ejemplo.com/images/galaxy_x.jpg",
   "description" : "Último modelo de smartphone con pantalla AMOLED de 6.5 pulgadas, 128GB de almacenamiento y cámara triple de 48MP.",
@@ -15,7 +15,7 @@
   "rating" : 4.5,
   "specifications" : "{\"ram\": \"6GB\", \"almacenamiento\": \"128GB\", \"sistemaOperativo\": \"Android 12\", \"color\": \"Negro\"}"
 }, {
-  "id" : 1756831579391,
+  "id" : "1756831579391",
   "productName" : "Laptop Ultralight Pro",
   "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
   "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
@@ -23,7 +23,7 @@
   "rating" : 4.3,
   "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
 }, {
-  "id" : 1756910569473,
+  "id" : "1756910569473",
   "productName" : "Laptop Ultralight Pro",
   "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
   "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
@@ -31,7 +31,7 @@
   "rating" : 4.3,
   "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
 }, {
-  "id" : 1756911390493,
+  "id" : "1756911390493",
   "productName" : "Laptop Ultralight Pro",
   "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
   "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
@@ -39,7 +39,7 @@
   "rating" : 4.3,
   "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
 }, {
-  "id" : 1756914406039,
+  "id" : "1756914406039",
   "productName" : "Laptop Ultralight Pro",
   "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
   "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
@@ -47,7 +47,15 @@
   "rating" : 4.3,
   "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
 }, {
-  "id" : 1756917410407,
+  "id" : "1756917410407",
+  "productName" : "Laptop Ultralight Pro",
+  "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
+  "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
+  "price" : 899.99,
+  "rating" : 4.3,
+  "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
+}, {
+  "id" : "3f70f587-bfb9-40f2-a4f8-2e1541aaa011",
   "productName" : "Laptop Ultralight Pro",
   "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
   "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
