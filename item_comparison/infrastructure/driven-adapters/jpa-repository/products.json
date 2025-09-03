@@ -1,0 +1,17 @@
+[ {
+  "id" : 1756903322170,
+  "productName" : "Test",
+  "imageUrl" : "url",
+  "description" : "description",
+  "price" : 99.9,
+  "rating" : 4.5,
+  "specifications" : "specifications"
+}, {
+  "id" : 1756905176762,
+  "productName" : "Test",
+  "imageUrl" : "url",
+  "description" : "description",
+  "price" : 99.9,
+  "rating" : 4.5,
+  "specifications" : "specifications"
+} ]
