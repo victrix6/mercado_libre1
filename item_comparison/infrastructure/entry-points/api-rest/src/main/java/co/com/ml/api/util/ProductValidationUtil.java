@@ -1,6 +1,8 @@
 package co.com.ml.api.util;
 
 import co.com.ml.model.product.Product;
+import co.com.ml.model.exceptions.ProductValidationException;
+import co.com.ml.model.exceptions.ProductComparisonException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,15 +12,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductValidationUtil {
 
+    // Error messages
+    private static final String PRODUCT_NULL_MESSAGE = "El producto no puede ser nulo";
+    private static final String PRODUCT_NAME_REQUIRED = "El nombre del producto es obligatorio";
+    private static final String DESCRIPTION_REQUIRED = "La descripción del producto es obligatoria";
+    private static final String IMAGE_URL_REQUIRED = "La URL de la imagen es obligatoria";
+    private static final String PRICE_REQUIRED = "El precio del producto debe ser mayor a cero";
+    private static final String RATING_REQUIRED = "La calificación del producto debe ser mayor o igual a cero";
+    private static final String SPECIFICATIONS_REQUIRED = "Las especificaciones del producto son obligatorias";
+    
+    // Comparison error messages
+    private static final String IDS_LIST_NULL = "La lista de IDs no puede ser nula";
+    private static final String MIN_TWO_IDS_REQUIRED = "Debe proporcionar al menos dos IDs";
+    private static final String MIN_TWO_VALID_IDS_REQUIRED = "Debe proporcionar al menos dos IDs válidos (no nulos ni vacíos)";
+    private static final String PRODUCTS_NOT_EXIST = "Alguno de los productos solicitados no existe";
+    private static final String MIN_TWO_PRODUCTS_REQUIRED = "Se requieren al menos dos productos existentes para comparar";
+
     /**
      * Valida que un producto cumpla con todas las reglas de negocio.
      * 
      * @param product el producto a validar
-     * @throws IllegalArgumentException si el producto no cumple con las validaciones
+     * @throws ProductValidationException si el producto no cumple con las validaciones
      */
     public void validateProduct(Product product) {
         if (product == null) {
-            throw new IllegalArgumentException("El producto no puede ser nulo");
+            throw new ProductValidationException(PRODUCT_NULL_MESSAGE);
         }
         
         validateProductName(product.getProductName());
@@ -34,7 +52,7 @@ public class ProductValidationUtil {
      */
     private void validateProductName(String productName) {
         if (productName == null || productName.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del producto es obligatorio");
+            throw new ProductValidationException(PRODUCT_NAME_REQUIRED);
         }
     }
 
@@ -43,7 +61,7 @@ public class ProductValidationUtil {
      */
     private void validateDescription(String description) {
         if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("La descripción del producto es obligatoria");
+            throw new ProductValidationException(DESCRIPTION_REQUIRED);
         }
     }
 
@@ -52,7 +70,7 @@ public class ProductValidationUtil {
      */
     private void validateImageUrl(String imageUrl) {
         if (imageUrl == null || imageUrl.trim().isEmpty()) {
-            throw new IllegalArgumentException("La URL de la imagen es obligatoria");
+            throw new ProductValidationException(IMAGE_URL_REQUIRED);
         }
     }
 
@@ -61,7 +79,7 @@ public class ProductValidationUtil {
      */
     private void validatePrice(Double price) {
         if (price == null || price <= 0) {
-            throw new IllegalArgumentException("El precio del producto debe ser mayor a cero");
+            throw new ProductValidationException(PRICE_REQUIRED);
         }
     }
 
@@ -70,7 +88,7 @@ public class ProductValidationUtil {
      */
     private void validateRating(Double rating) {
         if (rating == null || rating < 0) {
-            throw new IllegalArgumentException("La calificación del producto debe ser mayor o igual a cero");
+            throw new ProductValidationException(RATING_REQUIRED);
         }
     }
 
@@ -79,7 +97,7 @@ public class ProductValidationUtil {
      */
     private void validateSpecifications(String specifications) {
         if (specifications == null || specifications.trim().isEmpty()) {
-            throw new IllegalArgumentException("Las especificaciones del producto son obligatorias");
+            throw new ProductValidationException(SPECIFICATIONS_REQUIRED);
         }
     }
 
@@ -87,14 +105,14 @@ public class ProductValidationUtil {
      * Valida la lista de IDs para comparación de productos.
      * 
      * @param productIds lista de IDs a validar
-     * @throws IllegalArgumentException si la lista no cumple con las validaciones
+     * @throws ProductComparisonException si la lista no cumple con las validaciones
      */
     public void validateProductIdsForComparison(java.util.List<String> productIds) {
         if (productIds == null) {
-            throw new IllegalArgumentException("La lista de IDs no puede ser nula");
+            throw new ProductComparisonException(IDS_LIST_NULL);
         }
         if (productIds.size() < 2) {
-            throw new IllegalArgumentException("Debe proporcionar al menos dos IDs");
+            throw new ProductComparisonException(MIN_TWO_IDS_REQUIRED);
         }
         
         // normalizar: quitar nulos, vacíos y duplicados preservando orden
@@ -105,7 +123,7 @@ public class ProductValidationUtil {
                 .stream().collect(java.util.stream.Collectors.toList());
 
         if (normalizedIds.size() < 2) {
-            throw new IllegalArgumentException("Debe proporcionar al menos dos IDs válidos (no nulos ni vacíos)");
+            throw new ProductComparisonException(MIN_TWO_VALID_IDS_REQUIRED);
         }
     }
 
@@ -114,7 +132,7 @@ public class ProductValidationUtil {
      * 
      * @param productIds lista de IDs solicitados
      * @param foundProducts lista de productos encontrados
-     * @throws IllegalArgumentException si no se encuentran suficientes productos
+     * @throws ProductComparisonException si no se encuentran suficientes productos
      */
     public void validateComparisonResult(java.util.List<String> productIds, java.util.List<Product> foundProducts) {
         // normalizar IDs para la validación
@@ -126,11 +144,11 @@ public class ProductValidationUtil {
 
         if (normalizedIds.size() == 2) {
             if (foundProducts.size() < 2) {
-                throw new IllegalArgumentException("Alguno de los productos solicitados no existe");
+                throw new ProductComparisonException(PRODUCTS_NOT_EXIST);
             }
         } else { // más de 2
             if (foundProducts.size() < 2) {
-                throw new IllegalArgumentException("Se requieren al menos dos productos existentes para comparar");
+                throw new ProductComparisonException(MIN_TWO_PRODUCTS_REQUIRED);
             }
         }
     }

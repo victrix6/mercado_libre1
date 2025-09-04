@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import co.com.ml.model.exceptions.ProductValidationException;
+import co.com.ml.model.exceptions.ProductComparisonException;
 
 @DisplayName("Tests para ProductValidationUtil")
 class ProductValidationUtilTest {
@@ -38,8 +40,8 @@ class ProductValidationUtilTest {
     @DisplayName("Debería lanzar excepción cuando el producto es nulo")
     void shouldThrowExceptionWhenProductIsNull() {
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(null)
         );
         
@@ -55,8 +57,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullName)
         );
         
@@ -72,8 +74,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithEmptyName)
         );
         
@@ -89,8 +91,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullDescription)
         );
         
@@ -106,8 +108,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullImageUrl)
         );
         
@@ -123,8 +125,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullPrice)
         );
         
@@ -140,8 +142,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithZeroPrice)
         );
         
@@ -157,8 +159,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNegativePrice)
         );
         
@@ -174,8 +176,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullRating)
         );
         
@@ -191,8 +193,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNegativeRating)
         );
         
@@ -208,8 +210,8 @@ class ProductValidationUtilTest {
                 .build();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductValidationException exception = assertThrows(
+                ProductValidationException.class,
                 () -> productValidationUtil.validateProduct(productWithNullSpecifications)
         );
         
@@ -244,8 +246,8 @@ class ProductValidationUtilTest {
     @DisplayName("Debería lanzar excepción cuando la lista de IDs es nula")
     void shouldThrowExceptionWhenIdListIsNull() {
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateProductIdsForComparison(null)
         );
         
@@ -259,8 +261,8 @@ class ProductValidationUtilTest {
         java.util.List<String> singleId = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440001");
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateProductIdsForComparison(singleId)
         );
         
@@ -274,8 +276,8 @@ class ProductValidationUtilTest {
         java.util.List<String> nullIds = java.util.Arrays.asList(null, null);
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateProductIdsForComparison(nullIds)
         );
         
@@ -289,8 +291,8 @@ class ProductValidationUtilTest {
         java.util.List<String> duplicateIds = java.util.Arrays.asList("550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440001");
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateProductIdsForComparison(duplicateIds)
         );
         
@@ -332,8 +334,8 @@ class ProductValidationUtilTest {
         java.util.List<Product> foundProducts = java.util.Arrays.asList(product1); // Solo 1 de 2
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateComparisonResult(ids, foundProducts)
         );
         
@@ -349,8 +351,8 @@ class ProductValidationUtilTest {
         java.util.List<Product> foundProducts = java.util.Arrays.asList(product1); // Solo 1 de 3
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        ProductComparisonException exception = assertThrows(
+                ProductComparisonException.class,
                 () -> productValidationUtil.validateComparisonResult(ids, foundProducts)
         );
         

@@ -2,6 +2,7 @@ package co.com.ml.json;
 
 import co.com.ml.model.product.Product;
 import co.com.ml.model.product.gateways.ProductRepository;
+import co.com.ml.model.exceptions.ProductRepositoryException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,11 @@ public class JsonRepositoryAdapter implements ProductRepository {
     public Product addProduct(Product product) {
         try {
             List<Product> products = loadProducts();
-            if (product.getId() == null || product.getId().trim().isEmpty()) {
-                product.setId(Product.generateId());
-            }
             products.add(product);
             saveProducts(products);
             return product;
         } catch (IOException e) {
-            throw new RuntimeException("Error al guardar el producto", e);
+            throw new ProductRepositoryException("Error al guardar el producto", e);
         }
     }
 
@@ -39,28 +37,19 @@ public class JsonRepositoryAdapter implements ProductRepository {
         try {
             return loadProducts();
         } catch (IOException e) {
-            throw new RuntimeException("Error al listar los productos", e);
+            throw new ProductRepositoryException("Error al listar los productos", e);
         }
     }
 
     @Override
     public List<Product> compareProducts(List<String> productIds) {
-        if (productIds == null || productIds.isEmpty()) {
-            return new ArrayList<>();
-        }
+
         try {
             List<Product> all = loadProducts();
-            List<Product> result = new ArrayList<>();
-            for (String id : productIds) {
-                if (id == null || id.trim().isEmpty()) continue;
-                all.stream()
-                    .filter(p -> p.getId() != null && p.getId().equals(id))
-                    .findFirst()
-                    .ifPresent(result::add);
-            }
-            return result;
+            return all.stream().filter(p -> productIds.contains(p.getId()))
+                    .toList();
         } catch (IOException e) {
-            throw new RuntimeException("Error al cargar productos para comparación", e);
+            throw new ProductRepositoryException("Error al cargar productos para comparación", e);
         }
     }
 
@@ -68,7 +57,8 @@ public class JsonRepositoryAdapter implements ProductRepository {
         if (!file.exists() || file.length() == 0) {
             return new ArrayList<>();
         }
-        return objectMapper.readValue(file, new TypeReference<List<Product>>() {});
+        return objectMapper.readValue(file, new TypeReference<>() {
+        });
     }
 
     private void saveProducts(List<Product> products) throws IOException {
@@ -78,5 +68,4 @@ public class JsonRepositoryAdapter implements ProductRepository {
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, products);
     }
 
-    // Método de comparación basado en String eliminado en favor de retorno JSON (List<Product>)
 }

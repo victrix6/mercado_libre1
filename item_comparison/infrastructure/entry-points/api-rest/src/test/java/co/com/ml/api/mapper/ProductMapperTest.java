@@ -79,23 +79,19 @@ class ProductMapperTest {
     }
 
     @Test
-    @DisplayName("Debería retornar null cuando ProductDto es null")
-    void shouldReturnNullWhenProductDtoIsNull() {
-        // Act
-        Product result = productMapper.toModel(null);
-
-        // Assert
-        assertNull(result);
+    @DisplayName("Debería lanzar IllegalArgumentException cuando ProductDto es null")
+    void shouldThrowIllegalArgumentExceptionWhenProductDtoIsNull() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> productMapper.toModel(null));
+        assertEquals("ProductDto no puede ser null", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Debería retornar null cuando Product es null")
-    void shouldReturnNullWhenProductIsNull() {
-        // Act
-        ProductDto result = productMapper.toDto(null);
-
-        // Assert
-        assertNull(result);
+    @DisplayName("Debería lanzar IllegalArgumentException cuando Product es null")
+    void shouldThrowIllegalArgumentExceptionWhenProductIsNull() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> productMapper.toDto(null));
+        assertEquals("Product no puede ser null", exception.getMessage());
     }
 
     @Test
@@ -162,23 +158,19 @@ class ProductMapperTest {
     }
 
     @Test
-    @DisplayName("Debería retornar null cuando lista de ProductDto es null")
-    void shouldReturnNullWhenProductDtoListIsNull() {
-        // Act
-        List<Product> result = productMapper.toModelList(null);
-
-        // Assert
-        assertNull(result);
+    @DisplayName("Debería lanzar IllegalArgumentException cuando lista de ProductDto es null")
+    void shouldThrowIllegalArgumentExceptionWhenProductDtoListIsNull() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> productMapper.toModelList(null));
+        assertEquals("Lista de ProductDtos no puede ser null", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Debería retornar null cuando lista de Product es null")
-    void shouldReturnNullWhenProductListIsNull() {
-        // Act
-        List<ProductDto> result = productMapper.toDtoList(null);
-
-        // Assert
-        assertNull(result);
+    @DisplayName("Debería lanzar IllegalArgumentException cuando lista de Product es null")
+    void shouldThrowIllegalArgumentExceptionWhenProductListIsNull() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> productMapper.toDtoList(null));
+        assertEquals("Lista de Products no puede ser null", exception.getMessage());
     }
 
     @Test

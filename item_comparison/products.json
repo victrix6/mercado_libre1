@@ -62,4 +62,12 @@
   "price" : 899.99,
   "rating" : 4.3,
   "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
+}, {
+  "id" : "c77e3f23-1820-4731-b741-4d630300e734",
+  "productName" : "Laptop Ultralight Pro",
+  "imageUrl" : "https://ejemplo.com/images/ultralight_pro.jpg",
+  "description" : "Laptop ultradelgada y ligera ideal para trabajo y estudio, con procesador Intel i5 y 8GB de RAM.",
+  "price" : 899.99,
+  "rating" : 4.3,
+  "specifications" : "{\"procesador\": \"Intel Core i5-1135G7\", \"ram\": \"8GB\", \"almacenamiento\": \"256GB SSD\", \"pantalla\": \"14\\\" FHD\"}"
 } ]
